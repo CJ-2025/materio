@@ -29,8 +29,8 @@
       },
       series: [
         {
-          name: 'Sales',
-          data: [32, 55, 45, 75, 55, 35, 70]
+          name: 'Enrollments',
+          data: [0, 0, 0, 500, 0, 0, 0]
         }
       ],
       colors: [chartBgColor],
@@ -43,8 +43,8 @@
           colors: {
             ranges: [
               {
-                from: 75,
-                to: 80,
+                from: 0,
+                to: 1000,
                 color: config.colors.primary
               },
               {
@@ -73,10 +73,10 @@
         axisTicks: { show: false },
         crosshairs: { opacity: 0 },
         axisBorder: { show: false },
-        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        categories: ['Mar', 'Apr', 'May', 'jun', 'jul', 'Aug', 'Sep'],
         tickPlacement: 'on',
         labels: {
-          show: false
+          show: true
         },
         axisBorder: {
           show: false
@@ -87,12 +87,12 @@
       },
       yaxis: {
         min: 0,
-        max: 90,
+        max: 1000,
         show: true,
-        tickAmount: 3,
+        tickAmount: 5,
         labels: {
           formatter: function (val) {
-            return parseInt(val) + 'K';
+            return parseInt(val);
           },
           style: {
             fontSize: '13px',
@@ -189,7 +189,7 @@
     totalProfitLineChartConfig = {
       chart: {
         height: 90,
-        type: 'line',
+        type: 'bar',
         parentHeightOffset: 0,
         toolbar: {
           show: false
@@ -197,7 +197,7 @@
       },
       grid: {
         borderColor: labelColor,
-        strokeDashArray: 6,
+        strokeDashArray: 9,
         xaxis: {
           lines: {
             show: true
@@ -221,19 +221,35 @@
       },
       series: [
         {
-          data: [0, 20, 5, 30, 15, 45]
+          name: 'Members',
+          data: [56, 56, 56, 56, 56, 56, 56, 56, 52]
         }
       ],
       tooltip: {
+        enabled: true, // Enable tooltip on hover
         shared: false,
         intersect: true,
         x: {
-          show: false
+          show: true,
+          formatter: function (val, opts) {
+            // Show the corresponding category name
+            const category = opts.w.globals.categoryLabels[opts.dataPointIndex];
+            return category || val;
+          }
+        },
+        y: {
+          formatter: function (val) {
+            return val;
+          }
         }
       },
       xaxis: {
+        crosshairs: { opacity: 0 },
+        categories: ['SITE', 'ACS', 'ESSA', 'YBA', 'MBS', 'CJJE', 'CTE', 'NURSE', 'CEAT'],
+        tickAmount: 9,
+        tickPlacement: 'on',
         labels: {
-          show: false
+          show: true
         },
         axisTicks: {
           show: false
@@ -247,14 +263,10 @@
           show: false
         }
       },
-      tooltip: {
-        enabled: false
-      },
       markers: {
         size: 6,
         strokeWidth: 3,
         strokeColors: 'transparent',
-        strokeWidth: 3,
         colors: ['transparent'],
         discrete: [
           {
@@ -304,10 +316,11 @@
 
   // Sessions Column Chart
   // --------------------------------------------------------------------
+  // Sessions Column Chart (Updated for 500 students and improved representation)
   const sessionsColumnChartEl = document.querySelector('#sessionsColumnChart'),
     sessionsColumnChartConfig = {
       chart: {
-        height: 90,
+        height: 180,
         parentHeightOffset: 0,
         type: 'bar',
         toolbar: {
@@ -315,58 +328,181 @@
         }
       },
       tooltip: {
-        enabled: false
+        enabled: true,
+        y: {
+          formatter: function (val) {
+            return val + ' Students';
+          }
+        }
       },
       plotOptions: {
         bar: {
-          barHeight: '100%',
-          columnWidth: '20px',
-          startingShape: 'rounded',
-          endingShape: 'rounded',
-          borderRadius: 4,
-          colors: {
-            ranges: [
-              {
-                from: 25,
-                to: 32,
-                color: config.colors.danger
-              },
-              {
-                from: 60,
-                to: 75,
-                color: config.colors.primary
-              },
-              {
-                from: 45,
-                to: 50,
-                color: config.colors.danger
-              },
-              {
-                from: 35,
-                to: 42,
-                color: config.colors.primary
-              }
-            ],
-            backgroundBarColors: [chartBgColor, chartBgColor, chartBgColor, chartBgColor, chartBgColor],
-            backgroundBarRadius: 4
+          borderRadius: 8,
+          columnWidth: '40%',
+          distributed: true,
+          dataLabels: {
+            position: 'top'
           }
         }
       },
       grid: {
-        show: false,
+        show: true,
+        borderColor: borderColor,
+        strokeDashArray: 6,
         padding: {
-          top: -10,
-          left: -10,
-          bottom: -15
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
         }
       },
       dataLabels: {
-        enabled: false
+        enabled: true,
+        formatter: function (val) {
+          return val;
+        },
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: [labelColor]
+        }
       },
       legend: {
         show: false
       },
       xaxis: {
+        categories: ['SITE', 'ACS', 'ESSA', 'YBA', 'MBS'],
+        labels: {
+          show: true,
+          style: {
+            colors: labelColor,
+            fontSize: '13px'
+          }
+        },
+        axisTicks: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        }
+      },
+      yaxis: {
+        min: 0,
+        max: 200,
+        tickAmount: 4,
+        labels: {
+          show: true,
+          formatter: function (val) {
+            return parseInt(val);
+          },
+          style: {
+            colors: labelColor,
+            fontSize: '13px'
+          }
+        }
+      },
+      colors: [
+        config.colors.primary,
+        config.colors.info,
+        config.colors.success,
+        config.colors.warning,
+        config.colors.danger
+      ],
+      series: [
+        {
+          name: 'Students',
+          data: [120, 100, 90, 110, 80] // Total: 500 students
+        }
+      ],
+      responsive: [
+        {
+          breakpoint: 1200,
+          options: {
+            chart: {
+              height: 140
+            },
+            plotOptions: {
+              bar: {
+                columnWidth: '60%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              height: 120
+            },
+            plotOptions: {
+              bar: {
+                columnWidth: '70%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              height: 100
+            },
+            plotOptions: {
+              bar: {
+                columnWidth: '80%'
+              }
+            }
+          }
+        }
+      ]
+    };
+  if (typeof sessionsColumnChartEl !== 'undefined' && sessionsColumnChartEl !== null) {
+    const sessionsColumnChart = new ApexCharts(sessionsColumnChartEl, sessionsColumnChartConfig);
+    sessionsColumnChart.render();
+  }
+
+  // Sessions Donut Chart
+  // --------------------------------------------------------------------
+  const sessionsDonutChartEl = document.querySelector('#sessionsDonutChart'),
+    sessionsDonutChartConfig = {
+      chart: {
+        height: 150,
+        type: 'line', // Changed from 'donut' to 'line'
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false
+        }
+      },
+      series: [
+        {
+          name: 'Sessions',
+          data: [112, 56, 56, 56, 56, 56, 56]
+        }
+      ],
+      labels: ['CS', 'CCJE', 'CBA', 'CHTM', 'NARS', 'CEAT', 'CTE'],
+      colors: [
+        config.colors.primary
+      ],
+      legend: {
+        show: false // Hide legend
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      grid: {
+        padding: {
+          top: -10,
+          left: -10,
+          right: -10,
+          bottom: -10
+        }
+      },
+      xaxis: {
+        categories: ['CS', 'CCJE', 'CBA', 'CHTM', 'NARS', 'CEAT', 'CTE'],
         labels: {
           show: false
         },
@@ -379,38 +515,15 @@
       },
       yaxis: {
         labels: {
-          show: false
+          show: true
         }
       },
-      series: [
-        {
-          data: [30, 70, 50, 40, 60]
-        }
-      ],
       responsive: [
-        {
-          breakpoint: 1350,
-          options: {
-            chart: {
-              height: 80
-            },
-            plotOptions: {
-              bar: {
-                columnWidth: '40%'
-              }
-            }
-          }
-        },
         {
           breakpoint: 1200,
           options: {
             chart: {
               height: 100
-            },
-            plotOptions: {
-              bar: {
-                columnWidth: '20%'
-              }
             }
           }
         },
@@ -418,29 +531,49 @@
           breakpoint: 768,
           options: {
             chart: {
-              height: 110
-            },
-            plotOptions: {
-              bar: {
-                columnWidth: '10%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 480,
-          options: {
-            plotOptions: {
-              bar: {
-                columnWidth: '20%'
-              }
+              height: 100
             }
           }
         }
       ]
     };
-  if (typeof sessionsColumnChartEl !== undefined && sessionsColumnChartEl !== null) {
-    const sessionsColumnChart = new ApexCharts(sessionsColumnChartEl, sessionsColumnChartConfig);
-    sessionsColumnChart.render();
+  if (typeof sessionsDonutChartEl !== undefined && sessionsDonutChartEl !== null) {
+    const sessionsDonutChart = new ApexCharts(sessionsDonutChartEl, sessionsDonutChartConfig);
+    sessionsDonutChart.render();
   }
+
+// Sessions Statistics Pie Chart
+// --------------------------------------------------------------------
+const sessionsPieChartEl = document.querySelector('#sessionsPieChart');
+  const sessionsPieChartConfig = {
+    chart: {
+      type: 'pie',
+      height: 200
+    },
+    labels: ['SITE', 'ACS'],
+    series: [56, 56], // Example: SITE has 320 students, ACS has 180
+    colors: [config.colors.primary, config.colors.info], // Adjust based on your theme
+    legend: {
+      position: 'bottom'
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return val.toFixed(1) + '%';
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val + ' Students';
+        }
+      }
+    }
+  };
+
+  if (typeof sessionsPieChartEl !== 'undefined' && sessionsPieChartEl !== null) {
+    const sessionsPieChart = new ApexCharts(sessionsPieChartEl, sessionsPieChartConfig);
+    sessionsPieChart.render();
+  }
+
 })();
